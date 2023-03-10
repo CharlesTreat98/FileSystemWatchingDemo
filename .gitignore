@@ -1,0 +1,12 @@
+# Mac files
+.DS_store
+
+# git
+hooks
+info
+config
+
+# Breakpoints
+xcuserdata
+project.xcworkspace/
+
