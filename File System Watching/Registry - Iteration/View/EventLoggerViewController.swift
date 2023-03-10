@@ -32,16 +32,20 @@ extension EventLoggerViewController: DirectoryResourceObserverDelegate {
         events.append(EventLogViewModel(event: update))
     }
     
-    func directoryDidReceive(newFile: FileObservedEvent) {
-        events.append(EventLogViewModel(event: newFile))
+    func directoryDidReceive(newFileEvent: FileObservedEvent) {
+        events.append(EventLogViewModel(event: newFileEvent))
     }
     
-    func directoryDidReceive(deletedFile: FileObservedEvent) {
-        events.append(EventLogViewModel(event: deletedFile))
+    func directoryDidReceive(deletedFileEvent: FileObservedEvent) {
+        events.append(EventLogViewModel(event: deletedFileEvent))
     }
     
     func didReceiveRegister(registrationEvent: DirectoryObservationRegistrationEvent) {
         // no ops
+    }
+    
+    func directoryDidReceive(renameEvent: FileRenameEvent) {
+        events.append(EventLogViewModel(event: renameEvent))
     }
 }
 
@@ -51,7 +55,12 @@ extension EventLoggerViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemGroupedBackground
+        tableView.allowsSelection = false
         tableView.register(EventLogTableViewCell.self, forCellReuseIdentifier: EventLogTableViewCell.tableReuseIdentifier)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         token.observer.add(self)
     }

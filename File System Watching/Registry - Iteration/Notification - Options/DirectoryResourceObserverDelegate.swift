@@ -10,9 +10,11 @@ public protocol DirectoryResourceObserverDelegate: AnyObject {
     
     func directoryDidReceive(update: FileUpdateEvent)
     
-    func directoryDidReceive(newFile: FileObservedEvent)
+    func directoryDidReceive(newFileEvent: FileObservedEvent)
     
-    func directoryDidReceive(deletedFile: FileObservedEvent)
+    func directoryDidReceive(deletedFileEvent: FileObservedEvent)
     
     func didReceiveRegister(registrationEvent: DirectoryObservationRegistrationEvent)
+    
+    func directoryDidReceive(renameEvent: FileRenameEvent)
 }

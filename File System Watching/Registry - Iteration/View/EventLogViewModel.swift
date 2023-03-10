@@ -9,6 +9,8 @@ struct EventLogViewModel {
             return "Update"
         } else if event is FileInsertEvent {
             return "Insert"
+        } else if event is FileRenameEvent {
+            return "Rename"
         } else {
             return "Deleted"
         }
@@ -19,6 +21,8 @@ struct EventLogViewModel {
             return update.changedAttributes == nil ? "" : update.changedAttributes!.map { $0.rawValue }.joined(separator: ",")
         } else if event is FileInsertEvent {
             return event.affectedFile.name
+        } else if event is FileRenameEvent {
+            return "Previous Name: \((event as! FileRenameEvent).previousFile.name)"
         } else {
             return event.affectedFile.name
         }

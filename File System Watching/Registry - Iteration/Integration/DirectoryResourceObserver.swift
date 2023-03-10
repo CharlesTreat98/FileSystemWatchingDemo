@@ -133,14 +133,16 @@ extension DirectoryResourceObserver {
         
         if currentFileSet == newFiles {
             createUpdateEvent(forOldFiles: currentFileSet, againstNewFiles: newFiles)
+        } else if currentFileSet.count == newFiles.count {
+            createRenameEvent(from: currentFileSet, againstNewFiles: newFiles)
+        } else if let deletedFile = currentFileSet.subtracting(newFiles).first {
+            let deleteEvent = FileDeleteEvent(affectedFile: deletedFile)
+            
+            notifyDelegatesAbout(deleteFile: deleteEvent)
         } else if let newFile = newFiles.subtracting(currentFileSet).first {
             let insertEvent = FileInsertEvent(affectedFile: newFile)
             
             notifyDelegatesAbout(newFile: insertEvent)
-        } else if let deletedFile = currentFileSet.subtracting(newFiles).first  {
-            let deleteEvent = FileDeleteEvent(affectedFile: deletedFile)
-            
-            notifyDelegatesAbout(deleteFile: deleteEvent)
         } else {
             return
         }
@@ -165,6 +167,22 @@ extension DirectoryResourceObserver {
         }
         
         return
+    }
+    
+    private func createRenameEvent(from oldFileSet: Set<FileDescriptor>, againstNewFiles newFileSet: Set<FileDescriptor>) {
+        guard
+            let deletedFile = oldFileSet.subtracting(newFileSet).first,
+            let newFile = newFileSet.subtracting(oldFileSet).first
+        else {
+            return
+        }
+        
+        notifyDelegatesAbout(
+            renamedFile: FileRenameEvent(
+                affectedFile: newFile,
+                previousFile: deletedFile
+            )
+        )
     }
 }
 
@@ -196,13 +214,19 @@ extension DirectoryResourceObserver {
     
     private func notifyDelegatesAbout(newFile: FileInsertEvent) {
         for delegate in allDelegates() {
-            delegate.directoryDidReceive(newFile: newFile)
+            delegate.directoryDidReceive(newFileEvent: newFile)
         }
     }
     
     private func notifyDelegatesAbout(deleteFile: FileDeleteEvent) {
         for delegate in allDelegates() {
-            delegate.directoryDidReceive(deletedFile: deleteFile)
+            delegate.directoryDidReceive(deletedFileEvent: deleteFile)
+        }
+    }
+    
+    private func notifyDelegatesAbout(renamedFile: FileRenameEvent) {
+        for delegate in allDelegates() {
+            delegate.directoryDidReceive(renameEvent: renamedFile)
         }
     }
 }

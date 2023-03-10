@@ -22,6 +22,13 @@ public struct FileDeleteEvent: FileObservedEvent {
     public let affectedFile: FileDescriptor
 }
 
+public struct FileRenameEvent: FileObservedEvent {
+    
+    public let affectedFile: FileDescriptor
+    
+    public let previousFile: FileDescriptor
+}
+
 public struct DirectoryObservationRegistrationEvent: FileObservedEvent {
     
     /// Information about the observed directory
