@@ -52,6 +52,10 @@ extension EventLoggerViewController {
         
         view.backgroundColor = .systemGroupedBackground
         tableView.register(EventLogTableViewCell.self, forCellReuseIdentifier: EventLogTableViewCell.tableReuseIdentifier)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         token.observer.add(self)
     }

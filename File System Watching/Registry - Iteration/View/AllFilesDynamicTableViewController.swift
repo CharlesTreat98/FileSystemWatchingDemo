@@ -51,7 +51,7 @@ extension AllFilesDynamicTableViewController {
         
         let fileDescriptor = fileDescriptors[indexPath.row]
         
-        cell.fileTypeLabel.text = fileDescriptor.type.description
+        cell.fileTypeLabel.text = fileDescriptor.type.preferredFilenameExtension
         cell.fileNameLabel.text = fileDescriptor.name
         cell.fileAttributesLabel.text = fileDescriptor.attributes == nil
         ? nil
@@ -68,37 +68,43 @@ extension AllFilesDynamicTableViewController {
 extension AllFilesDynamicTableViewController {
     
     func directoryDidReceive(update: FileUpdateEvent) {
-        guard
-            let index = fileDescriptors.firstIndex(of: update.affectedFile),
-            let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? RepresentedFileTableViewCell
-        else {
-            return
+        DispatchQueue.main.async {
+            guard
+                let index = self.fileDescriptors.firstIndex(of: update.affectedFile),
+                let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? RepresentedFileTableViewCell
+            else {
+                return
+            }
+            
+            self.tableView.beginUpdates()
+            cell.fileAttributesLabel.text = update.affectedFile.attributes!.keys.compactMap { $0.rawValue }.joined(separator: ", ")
+            cell.fileTypeLabel.text = update.affectedFile.type.description
+            self.tableView.endUpdates()
         }
-        
-        tableView.beginUpdates()
-        cell.fileAttributesLabel.text = update.affectedFile.attributes!.keys.compactMap { $0.rawValue }.joined(separator: ", ")
-        cell.fileTypeLabel.text = update.affectedFile.type.description
-        tableView.endUpdates()
     }
     
     func directoryDidReceive(newFile: FileObservedEvent) {
-        fileDescriptors.append(newFile.affectedFile)
-        
-        tableView.beginUpdates()
-        tableView.insertRows(at: [IndexPath(row: fileDescriptors.count - 1, section: 0)], with: .automatic)
-        tableView.endUpdates()
+        DispatchQueue.main.async {
+            self.fileDescriptors.append(newFile.affectedFile)
+            
+            self.tableView.beginUpdates()
+            self.tableView.insertRows(at: [IndexPath(row: self.fileDescriptors.count - 1, section: 0)], with: .automatic)
+            self.tableView.endUpdates()
+        }
     }
     
     func directoryDidReceive(deletedFile: FileObservedEvent) {
-        guard let index = fileDescriptors.firstIndex(of: deletedFile.affectedFile) else {
-            return
+        DispatchQueue.main.async {
+            guard let index = self.fileDescriptors.firstIndex(of: deletedFile.affectedFile) else {
+                return
+            }
+            
+            self.fileDescriptors.remove(at: index)
+            
+            self.tableView.beginUpdates()
+            self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            self.tableView.endUpdates()
         }
-        
-        fileDescriptors.remove(at: index)
-        
-        tableView.beginUpdates()
-        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-        tableView.endUpdates()
     }
     
     func didReceiveRegister(registrationEvent: DirectoryObservationRegistrationEvent) {

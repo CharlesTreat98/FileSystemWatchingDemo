@@ -38,7 +38,10 @@ extension RepresentedFileTableViewCell {
 extension RepresentedFileTableViewCell {
     
     private func lazyFileTypeLabel() -> UILabel {
-        return makeLabel(with: .preferredFont(forTextStyle: .headline))
+        let label = makeLabel(with: .preferredFont(forTextStyle: .headline))
+        
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
     }
     
     private func lazyAllCellContentStackView() -> UIStackView {
@@ -49,7 +52,7 @@ extension RepresentedFileTableViewCell {
         
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
@@ -80,7 +83,7 @@ extension RepresentedFileTableViewCell {
         let label = makeLabel(with: .preferredFont(forTextStyle: .subheadline))
         label.numberOfLines = 0
         label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         
         return label
     }

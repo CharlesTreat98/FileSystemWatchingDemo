@@ -44,6 +44,8 @@
 		23C3863229BA31B700F82942 /* DirectoryResourceObserverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3863129BA31B700F82942 /* DirectoryResourceObserverDelegate.swift */; };
 		23C3863429BA89E800F82942 /* AllFilesDynamicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3863329BA89E800F82942 /* AllFilesDynamicTableViewController.swift */; };
 		23C3863629BA8B6200F82942 /* RepresentedFileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3863529BA8B6200F82942 /* RepresentedFileTableViewCell.swift */; };
+		23C3909829C9017E00F82942 /* InspectionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3909729C9017E00F82942 /* InspectionsController.swift */; };
+		23C3909A29C9060500F82942 /* FileTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3909929C9060500F82942 /* FileTransformer.swift */; };
 		23F9DC2229A5AA8000EE2777 /* FileDescriptorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F9DC2129A5AA8000EE2777 /* FileDescriptorTableViewCell.swift */; };
 		23F9DC2829A6CB1A00EE2777 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F9DC2729A6CB1A00EE2777 /* FileManager+Extensions.swift */; };
 		23F9DC2C29A6D0D500EE2777 /* UTType+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F9DC2B29A6D0D500EE2777 /* UTType+Convenience.swift */; };
@@ -88,6 +90,8 @@
 		23C3863129BA31B700F82942 /* DirectoryResourceObserverDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryResourceObserverDelegate.swift; sourceTree = "<group>"; };
 		23C3863329BA89E800F82942 /* AllFilesDynamicTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllFilesDynamicTableViewController.swift; sourceTree = "<group>"; };
 		23C3863529BA8B6200F82942 /* RepresentedFileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepresentedFileTableViewCell.swift; sourceTree = "<group>"; };
+		23C3909729C9017E00F82942 /* InspectionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionsController.swift; sourceTree = "<group>"; };
+		23C3909929C9060500F82942 /* FileTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransformer.swift; sourceTree = "<group>"; };
 		23F9DC2129A5AA8000EE2777 /* FileDescriptorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDescriptorTableViewCell.swift; sourceTree = "<group>"; };
 		23F9DC2729A6CB1A00EE2777 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		23F9DC2B29A6D0D500EE2777 /* UTType+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UTType+Convenience.swift"; sourceTree = "<group>"; };
@@ -260,6 +264,8 @@
 			isa = PBXGroup;
 			children = (
 				23C3863129BA31B700F82942 /* DirectoryResourceObserverDelegate.swift */,
+				23C3909729C9017E00F82942 /* InspectionsController.swift */,
+				23C3909929C9060500F82942 /* FileTransformer.swift */,
 			);
 			path = "Notification - Options";
 			sourceTree = "<group>";
@@ -360,7 +366,9 @@
 				23F9DC2829A6CB1A00EE2777 /* FileManager+Extensions.swift in Sources */,
 				23789AD629B4FD5B00694F7E /* FileResourceToken.swift in Sources */,
 				23C3863429BA89E800F82942 /* AllFilesDynamicTableViewController.swift in Sources */,
+				23C3909A29C9060500F82942 /* FileTransformer.swift in Sources */,
 				235E57A529A9030B00CE9944 /* FileSystemEventPropagator.swift in Sources */,
+				23C3909829C9017E00F82942 /* InspectionsController.swift in Sources */,
 				23789ADC29B4FE4400694F7E /* FileResourceRegistry.swift in Sources */,
 				23789ADA29B4FE1800694F7E /* FileObservedEvent.swift in Sources */,
 				235E5B3F29ADAF8300CE9944 /* IndividualInspectionFileTransformStrategy.swift in Sources */,
