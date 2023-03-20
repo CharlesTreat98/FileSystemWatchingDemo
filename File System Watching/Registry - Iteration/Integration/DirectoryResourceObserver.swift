@@ -4,17 +4,20 @@ import UniformTypeIdentifiers
 
 public final class DirectoryResourceObserver: @unchecked Sendable {
     
+    // Exposed for testing
+    internal let queue = DispatchQueue(label: "DirectoryWatcher-\(UUID().uuidString)")
+    
+    // Option 1: Delegates
+    private(set) var delegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
+    
+    private(set) lazy var fileManager = lazyFileManager()
+    
     private let channel: AsyncThrowingChannel<Any, Error>
     private let dispatchSource: DispatchSourceFileSystemObject
     private let fileResource: FileResource
     
     /// Should only be accessed via `queue`.
     private var currentFiles: [FileDescriptor] = []
-
-    private let queue = DispatchQueue(label: "DirectoryWatcher-\(UUID().uuidString)")
-    
-    // Option 1: Delegates
-    private(set) var delegates: NSHashTable<AnyObject> = NSHashTable<AnyObject>.weakObjects()
     
     init(fileResource: FileResource) {
         let fileDescriptor = open((fileResource.url.path as NSString).fileSystemRepresentation, O_EVTONLY)
@@ -36,7 +39,7 @@ public final class DirectoryResourceObserver: @unchecked Sendable {
 extension DirectoryResourceObserver {
     
     private func initSelf() {
-        dispatchSource.setEventHandler(handler: { [unowned self] in
+        dispatchSource.setEventHandler(qos: .userInteractive, handler: { [unowned self] in
             self.fileEvent()
         })
         
@@ -45,6 +48,17 @@ extension DirectoryResourceObserver {
         }
         
         dispatchSource.resume()
+    }
+    
+    func tearDown() {
+        for delegate in allDelegates() {
+            delegates.remove(delegate)
+        }
+        
+        dispatchSource.cancel()
+        
+        queue.sync {
+        }
     }
 }
 
@@ -73,8 +87,9 @@ extension DirectoryResourceObserver {
 
 extension DirectoryResourceObserver {
     
+    /// Called on `queue` via the `DispatchSourceWorkItem`.
     private func collectCurrentFiles() -> [FileDescriptor] {
-        guard let enumerator = FileManager.default.enumerator(atPath: fileResource.url.path) else {
+        guard let enumerator = fileManager.enumerator(atPath: fileResource.url.path) else {
             return []
         }
         
@@ -172,7 +187,7 @@ extension DirectoryResourceObserver {
     
     /// Thread safe notification of newly registered delegate about current file contents
     /// Marked as internal to allow the extension to read this method. 
-    internal func joinInProgress(for delegate: DirectoryResourceObserverDelegate) {
+    private func joinInProgress(for delegate: DirectoryResourceObserverDelegate) {
         queue.async { [self] in
             delegate.didReceiveRegister(
                 registrationEvent: DirectoryObservationRegistrationEvent(
@@ -213,7 +228,7 @@ extension DirectoryResourceObserver {
     
     private func observedDirectoryDescriptor() -> FileDescriptor {
         do {
-            let attributes = try FileManager.default.attributesOfItem(atPath: fileResource.url.path)
+            let attributes = try fileManager.attributesOfItem(atPath: fileResource.url.path)
             
             return FileDescriptor(
                 name: fileResource.url.lastPathComponent,
@@ -238,6 +253,13 @@ extension DirectoryResourceObserver {
     
     private func allDelegates() -> [DirectoryResourceObserverDelegate] {
         return delegates.allObjects as! [DirectoryResourceObserverDelegate]
+    }
+}
+
+extension DirectoryResourceObserver {
+    
+    private func lazyFileManager() -> FileManager {
+        return FileManager()
     }
 }
 
