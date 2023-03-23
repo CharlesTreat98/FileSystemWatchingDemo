@@ -18,6 +18,8 @@ final class SegmentedFileWatcherViewController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         
+        createDirectoryIfNeeded()
+        
         self.viewControllers = [
             EventLoggerViewController(token: fileResourceToken),
             GeneralizedTransformedFilesTableViewController(
@@ -41,6 +43,21 @@ final class SegmentedFileWatcherViewController: UIViewController {
     
     deinit {
         fileRegistry.unregister(fileResourceToken)
+    }
+}
+
+extension SegmentedFileWatcherViewController {
+    
+    private func createDirectoryIfNeeded() {
+        guard !FileManager.default.fileExists(atPath: dropBoxURL().path) else {
+            return
+        }
+        
+        do {
+            try FileManager.default.createDirectory(at: dropBoxURL(), withIntermediateDirectories: false)
+        } catch {
+            print("There was an issue creating the directory used for observation.")
+        }
     }
 }
 
