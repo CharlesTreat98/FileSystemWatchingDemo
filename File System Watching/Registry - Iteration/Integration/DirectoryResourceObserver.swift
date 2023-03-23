@@ -190,19 +190,19 @@ extension DirectoryResourceObserver {
     
     private func notifyDelegatesAbout(update: FileUpdateEvent) {
         for delegate in allDelegates() {
-            delegate.directoryDidReceive(update: update)
+            delegate.directoryDidReceive(updateEvent: update)
         }
     }
     
     private func notifyDelegatesAbout(newFile: FileInsertEvent) {
         for delegate in allDelegates() {
-            delegate.directoryDidReceive(newFile: newFile)
+            delegate.directoryDidReceive(newFileEvent: newFile)
         }
     }
     
     private func notifyDelegatesAbout(deleteFile: FileDeleteEvent) {
         for delegate in allDelegates() {
-            delegate.directoryDidReceive(deletedFile: deleteFile)
+            delegate.directoryDidReceive(deletedFileEvent: deleteFile)
         }
     }
 }

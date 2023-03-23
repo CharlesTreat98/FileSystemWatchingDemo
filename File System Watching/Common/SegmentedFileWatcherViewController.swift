@@ -5,8 +5,6 @@ final class SegmentedFileWatcherViewController: UIViewController {
     
     private(set) lazy var segmentedControl = lazySegmentedView()
     
-    private lazy var coordinator = lazyFileDescriptorCoordinator()
-    
     private lazy var lineSeparatorView = lazyLineSeparatorView()
     
     private var viewControllers: [UIViewController] = []
@@ -15,31 +13,25 @@ final class SegmentedFileWatcherViewController: UIViewController {
     
     private lazy var fileRegistry = lazyFileObserverRegistry()
     
-//    private let loggerViewController = EventLoggerViewController()
-    
     private lazy var fileResourceToken = lazyFileResourceToken()
     
     init() {
         super.init(nibName: nil, bundle: nil)
         
-        // Strategies Iteration
-//        let jsonViewModel = FileDescriptorViewModel(title: "JSON")
-//        let filesViewModel = FileDescriptorViewModel(title: "All")
-//        let inspectionViewModel = InspectionViewModel()
-//
-//        coordinator.register(JSONFilesTransformationStrategy(viewModel: jsonViewModel))
-//        coordinator.register(TotalFilesTransformationStrategy(viewModel: filesViewModel))
-//        coordinator.register(InspectionsDecodingTransformationStrategy(viewModel: inspectionViewModel))
-        
-//        self.viewControllers = [
-//            FileTableViewController(viewModel: filesViewModel, hasDetails: false),
-//            loggerViewController,
-//            InspectionTableViewController(viewModel: inspectionViewModel)
-//        ]
-        
         self.viewControllers = [
             EventLoggerViewController(token: fileResourceToken),
-            AllFilesDynamicTableViewController(token: fileResourceToken)
+            GeneralizedTransformedFilesTableViewController(
+                token: fileResourceToken,
+                fileTransformer: InspectionFileTransformer(),
+                renderer: InspectionCellRenderer(),
+                title: "Inspections"
+            ),
+            GeneralizedTransformedFilesTableViewController(
+                token: fileResourceToken,
+                fileTransformer: TextFileTransformer(),
+                renderer: TextCellRenderer(),
+                title: "Text"
+            )
         ]
     }
     
@@ -70,15 +62,6 @@ extension SegmentedFileWatcherViewController {
         updateConstraintsFor(new: selectedViewController!.view)
         
         selectedViewController!.didMove(toParent: self)
-        
-        let fileResource = FileResource(url: dropBoxURL())
-        self.fileResourceToken = fileRegistry.register(fileResource)
-        
-//        do {
-//            try coordinator.start()
-//        } catch {
-//            print("Error caught: \(error)")
-//        }
     }
 }
 
@@ -148,13 +131,7 @@ extension SegmentedFileWatcherViewController {
         
         return segmentedControl
     }
-    
-    private func lazyFileDescriptorCoordinator() -> FileWatcherCoordinator {
-        return FileWatcherCoordinator(
-            observable: FileSystemObservable(url: dropBoxURL())
-        )
-    }
-    
+
     private func lazyFileObserverRegistry() -> FileResourceRegistry {
         return DefaultFileResourceRegistry()
     }

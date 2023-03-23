@@ -10,10 +10,10 @@ final class InspectionsController: DirectoryResourceObserverDelegate {
 
 extension InspectionsController {
     
-    func directoryDidReceive(update: FileUpdateEvent) {
+    func directoryDidReceive(updateEvent: FileUpdateEvent) {
         guard
-            update.contentsChanged,
-            let inspection = deriveInspection(from: update.affectedFile)
+            updateEvent.contentsChanged,
+            let inspection = deriveInspection(from: updateEvent.affectedFile)
         else {
             return
         }
@@ -21,17 +21,17 @@ extension InspectionsController {
         updateInspections(with: inspection)
     }
     
-    func directoryDidReceive(newFile: FileObservedEvent) {
-        guard let inspection = deriveInspection(from: newFile.affectedFile) else {
+    func directoryDidReceive(newFileEvent: FileObservedEvent) {
+        guard let inspection = deriveInspection(from: newFileEvent.affectedFile) else {
             return
         }
         
         inspections.append(inspection)
     }
     
-    func directoryDidReceive(deletedFile: FileObservedEvent) {
+    func directoryDidReceive(deletedFileEvent: FileObservedEvent) {
         guard
-            let inspection = deriveInspection(from: deletedFile.affectedFile),
+            let inspection = deriveInspection(from: deletedFileEvent.affectedFile),
             let indexToRemove = inspections.firstIndex(where: { $0.header.name == inspection.header.name })
         else {
             return
@@ -50,12 +50,7 @@ extension InspectionsController {
 extension InspectionsController {
     
     private func deriveInspection(from fileDescriptor: FileDescriptor) -> Inspection? {
-        do {
-            return try inspectionTransformer.transform(fileDescriptor: fileDescriptor)
-        } catch {
-            print("Encountered error trying to derive inspection: \(error)")
-            return nil
-        }
+        return inspectionTransformer.transform(fileDescriptor: fileDescriptor)
     }
 }
 

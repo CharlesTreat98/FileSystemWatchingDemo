@@ -28,16 +28,16 @@ final class EventLoggerViewController: UITableViewController {
 
 extension EventLoggerViewController: DirectoryResourceObserverDelegate {
     
-    func directoryDidReceive(update: FileUpdateEvent) {
-        events.append(EventLogViewModel(event: update))
+    func directoryDidReceive(updateEvent: FileUpdateEvent) {
+        events.append(EventLogViewModel(event: updateEvent))
     }
     
-    func directoryDidReceive(newFile: FileObservedEvent) {
-        events.append(EventLogViewModel(event: newFile))
+    func directoryDidReceive(newFileEvent: FileObservedEvent) {
+        events.append(EventLogViewModel(event: newFileEvent))
     }
     
-    func directoryDidReceive(deletedFile: FileObservedEvent) {
-        events.append(EventLogViewModel(event: deletedFile))
+    func directoryDidReceive(deletedFileEvent: FileObservedEvent) {
+        events.append(EventLogViewModel(event: deletedFileEvent))
     }
     
     func didReceiveRegister(registrationEvent: DirectoryObservationRegistrationEvent) {

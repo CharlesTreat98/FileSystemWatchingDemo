@@ -6,13 +6,15 @@ import Foundation
 //
 // Requires the developer to save the reference to the `Token` which we already were requiring based on the design
 // of the `FileResourceRegistry`. However, we will still need a reference to
+//
+// Should these throw ?? see FileTransformer
 public protocol DirectoryResourceObserverDelegate: AnyObject {
     
-    func directoryDidReceive(update: FileUpdateEvent)
+    func directoryDidReceive(updateEvent: FileUpdateEvent)
     
-    func directoryDidReceive(newFile: FileObservedEvent)
+    func directoryDidReceive(newFileEvent: FileObservedEvent)
     
-    func directoryDidReceive(deletedFile: FileObservedEvent)
+    func directoryDidReceive(deletedFileEvent: FileObservedEvent)
     
     func didReceiveRegister(registrationEvent: DirectoryObservationRegistrationEvent)
 }

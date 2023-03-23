@@ -1,36 +1,31 @@
 import Foundation
+import UIKit
 
+/// Can be used by `DirectoryResourceObserverDelegates` to process the raw file data
+/// passed in from `FileObservedEvents` into "final product types"
 protocol FileTransformer {
+    
+    // Should we enforce this type constraint to make it easier for
+    // developers to re-use a 'general' delegate?
+    // Perhaps hashable instead to make tracking elements even easier?
+    associatedtype Element: Equatable
+    
+    func transform(fileDescriptor: FileDescriptor) -> Element?
+}
+
+protocol OpenFileTransformer {
     
     associatedtype Element
     
-    func transform(fileDescriptor: FileDescriptor) throws -> Element?
+    func transform(fileDescriptor: FileDescriptor) -> Element?
 }
 
 
-struct Inspection: Decodable {
+final class InspectionFileTransformer: FileTransformer {
     
-    let header: Metadata
-    let forms: [Form]
+    var error: Error?
     
-    struct Metadata: Decodable {
-        let name: String
-        let description: String
-        let purpose: String
-        let revision: Int64
-        let databaseSize: Int64
-    }
-    
-    struct Form: Decodable {
-        let name: String
-        let mappingFeatureClassName: String
-        let primaryDisplayField: String
-    }
-}
-
-struct InspectionFileTransformer: FileTransformer {
-    
-    func transform(fileDescriptor: FileDescriptor) throws -> Inspection? {
+    func transform(fileDescriptor: FileDescriptor) -> Inspection? {
         guard
             fileDescriptor.type == .json,
             let data = FileManager.default.contents(atPath: fileDescriptor.url.path)
@@ -38,7 +33,38 @@ struct InspectionFileTransformer: FileTransformer {
             return nil
         }
         
-        let inspection = try JSONDecoder().decode(Inspection.self, from: data)
-        return inspection
+        do {
+            return try JSONDecoder().decode(Inspection.self, from: data)
+        } catch {
+            self.error = error
+            return nil
+        }
+    }
+}
+
+
+struct TextFileTransformer: FileTransformer {
+    
+    func transform(fileDescriptor: FileDescriptor) -> TextFile? {
+        guard
+            fileDescriptor.type == .plainText,
+            let data = FileManager.default.contents(atPath: fileDescriptor.url.path),
+            let string = String(data: data, encoding: .utf8)
+        else {
+            return nil
+        }
+
+        return TextFile(name: fileDescriptor.name, text: string)
+    }
+}
+
+struct DatabaseFileTransformer: FileTransformer {
+    
+    func transform(fileDescriptor: FileDescriptor) -> FileDescriptor? {
+        guard fileDescriptor.type == .database else {
+            return nil
+        }
+        
+        return fileDescriptor
     }
 }

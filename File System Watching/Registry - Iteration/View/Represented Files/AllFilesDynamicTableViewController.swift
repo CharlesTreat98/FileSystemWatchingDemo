@@ -67,25 +67,25 @@ extension AllFilesDynamicTableViewController {
 
 extension AllFilesDynamicTableViewController {
     
-    func directoryDidReceive(update: FileUpdateEvent) {
+    func directoryDidReceive(updateEvent: FileUpdateEvent) {
         DispatchQueue.main.async {
             guard
-                let index = self.fileDescriptors.firstIndex(of: update.affectedFile),
+                let index = self.fileDescriptors.firstIndex(of: updateEvent.affectedFile),
                 let cell = self.tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? RepresentedFileTableViewCell
             else {
                 return
             }
             
             self.tableView.beginUpdates()
-            cell.fileAttributesLabel.text = update.affectedFile.attributes!.keys.compactMap { $0.rawValue }.joined(separator: ", ")
-            cell.fileTypeLabel.text = update.affectedFile.type.description
+            cell.fileAttributesLabel.text = updateEvent.affectedFile.attributes!.keys.compactMap { $0.rawValue }.joined(separator: ", ")
+            cell.fileTypeLabel.text = updateEvent.affectedFile.type.description
             self.tableView.endUpdates()
         }
     }
     
-    func directoryDidReceive(newFile: FileObservedEvent) {
+    func directoryDidReceive(newFileEvent: FileObservedEvent) {
         DispatchQueue.main.async {
-            self.fileDescriptors.append(newFile.affectedFile)
+            self.fileDescriptors.append(newFileEvent.affectedFile)
             
             self.tableView.beginUpdates()
             self.tableView.insertRows(at: [IndexPath(row: self.fileDescriptors.count - 1, section: 0)], with: .automatic)
@@ -93,9 +93,9 @@ extension AllFilesDynamicTableViewController {
         }
     }
     
-    func directoryDidReceive(deletedFile: FileObservedEvent) {
+    func directoryDidReceive(deletedFileEvent: FileObservedEvent) {
         DispatchQueue.main.async {
-            guard let index = self.fileDescriptors.firstIndex(of: deletedFile.affectedFile) else {
+            guard let index = self.fileDescriptors.firstIndex(of: deletedFileEvent.affectedFile) else {
                 return
             }
             

@@ -46,6 +46,10 @@
 		23C3863629BA8B6200F82942 /* RepresentedFileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3863529BA8B6200F82942 /* RepresentedFileTableViewCell.swift */; };
 		23C3909829C9017E00F82942 /* InspectionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3909729C9017E00F82942 /* InspectionsController.swift */; };
 		23C3909A29C9060500F82942 /* FileTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3909929C9060500F82942 /* FileTransformer.swift */; };
+		23C3941129CA40A200F82942 /* GeneralizedTransformedFilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3941029CA40A200F82942 /* GeneralizedTransformedFilesTableViewController.swift */; };
+		23C3965F29CB9EB200F82942 /* DataModelExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3965E29CB9EB200F82942 /* DataModelExamples.swift */; };
+		23C3966129CB9F0600F82942 /* DefaultFileElementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3966029CB9F0600F82942 /* DefaultFileElementController.swift */; };
+		23C3966329CB9F3500F82942 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3966229CB9F3500F82942 /* Renderer.swift */; };
 		23F9DC2229A5AA8000EE2777 /* FileDescriptorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F9DC2129A5AA8000EE2777 /* FileDescriptorTableViewCell.swift */; };
 		23F9DC2829A6CB1A00EE2777 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F9DC2729A6CB1A00EE2777 /* FileManager+Extensions.swift */; };
 		23F9DC2C29A6D0D500EE2777 /* UTType+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F9DC2B29A6D0D500EE2777 /* UTType+Convenience.swift */; };
@@ -92,6 +96,10 @@
 		23C3863529BA8B6200F82942 /* RepresentedFileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepresentedFileTableViewCell.swift; sourceTree = "<group>"; };
 		23C3909729C9017E00F82942 /* InspectionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionsController.swift; sourceTree = "<group>"; };
 		23C3909929C9060500F82942 /* FileTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransformer.swift; sourceTree = "<group>"; };
+		23C3941029CA40A200F82942 /* GeneralizedTransformedFilesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralizedTransformedFilesTableViewController.swift; sourceTree = "<group>"; };
+		23C3965E29CB9EB200F82942 /* DataModelExamples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelExamples.swift; sourceTree = "<group>"; };
+		23C3966029CB9F0600F82942 /* DefaultFileElementController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFileElementController.swift; sourceTree = "<group>"; };
+		23C3966229CB9F3500F82942 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		23F9DC2129A5AA8000EE2777 /* FileDescriptorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDescriptorTableViewCell.swift; sourceTree = "<group>"; };
 		23F9DC2729A6CB1A00EE2777 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		23F9DC2B29A6D0D500EE2777 /* UTType+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UTType+Convenience.swift"; sourceTree = "<group>"; };
@@ -251,11 +259,9 @@
 		23C3862F29B9390B00F82942 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				235E5A0229AD4BAF00CE9944 /* EventLoggerViewController.swift */,
-				235E5FE429B4EDA100CE9944 /* EventLogTableViewCell.swift */,
-				235E5FE629B4F18E00CE9944 /* EventLogViewModel.swift */,
-				23C3863329BA89E800F82942 /* AllFilesDynamicTableViewController.swift */,
-				23C3863529BA8B6200F82942 /* RepresentedFileTableViewCell.swift */,
+				23C3940F29CA407200F82942 /* Generalized File Transformer Examples */,
+				23C3940E29CA3CB400F82942 /* Represented Files */,
+				23C3940D29CA3CA600F82942 /* Logger */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -266,8 +272,38 @@
 				23C3863129BA31B700F82942 /* DirectoryResourceObserverDelegate.swift */,
 				23C3909729C9017E00F82942 /* InspectionsController.swift */,
 				23C3909929C9060500F82942 /* FileTransformer.swift */,
+				23C3965E29CB9EB200F82942 /* DataModelExamples.swift */,
+				23C3966029CB9F0600F82942 /* DefaultFileElementController.swift */,
 			);
 			path = "Notification - Options";
+			sourceTree = "<group>";
+		};
+		23C3940D29CA3CA600F82942 /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				235E5FE629B4F18E00CE9944 /* EventLogViewModel.swift */,
+				235E5FE429B4EDA100CE9944 /* EventLogTableViewCell.swift */,
+				235E5A0229AD4BAF00CE9944 /* EventLoggerViewController.swift */,
+			);
+			path = Logger;
+			sourceTree = "<group>";
+		};
+		23C3940E29CA3CB400F82942 /* Represented Files */ = {
+			isa = PBXGroup;
+			children = (
+				23C3863329BA89E800F82942 /* AllFilesDynamicTableViewController.swift */,
+				23C3863529BA8B6200F82942 /* RepresentedFileTableViewCell.swift */,
+			);
+			path = "Represented Files";
+			sourceTree = "<group>";
+		};
+		23C3940F29CA407200F82942 /* Generalized File Transformer Examples */ = {
+			isa = PBXGroup;
+			children = (
+				23C3941029CA40A200F82942 /* GeneralizedTransformedFilesTableViewController.swift */,
+				23C3966229CB9F3500F82942 /* Renderer.swift */,
+			);
+			path = "Generalized File Transformer Examples";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -350,6 +386,7 @@
 				23C3863229BA31B700F82942 /* DirectoryResourceObserverDelegate.swift in Sources */,
 				235E5A0A29AD55E700CE9944 /* InspectionTableViewController.swift in Sources */,
 				235E5FE729B4F18E00CE9944 /* EventLogViewModel.swift in Sources */,
+				23C3966329CB9F3500F82942 /* Renderer.swift in Sources */,
 				230A73E629A421EA00B0A7B8 /* FileWatcher.swift in Sources */,
 				235E57A329A9014000CE9944 /* FileSystemObservable.swift in Sources */,
 				235E5A0E29AD57D500CE9944 /* FileDescriptorViewDelegate.swift in Sources */,
@@ -368,8 +405,11 @@
 				23C3863429BA89E800F82942 /* AllFilesDynamicTableViewController.swift in Sources */,
 				23C3909A29C9060500F82942 /* FileTransformer.swift in Sources */,
 				235E57A529A9030B00CE9944 /* FileSystemEventPropagator.swift in Sources */,
+				23C3965F29CB9EB200F82942 /* DataModelExamples.swift in Sources */,
+				23C3966129CB9F0600F82942 /* DefaultFileElementController.swift in Sources */,
 				23C3909829C9017E00F82942 /* InspectionsController.swift in Sources */,
 				23789ADC29B4FE4400694F7E /* FileResourceRegistry.swift in Sources */,
+				23C3941129CA40A200F82942 /* GeneralizedTransformedFilesTableViewController.swift in Sources */,
 				23789ADA29B4FE1800694F7E /* FileObservedEvent.swift in Sources */,
 				235E5B3F29ADAF8300CE9944 /* IndividualInspectionFileTransformStrategy.swift in Sources */,
 				235E5A0C29AD578100CE9944 /* InspectionViewModel.swift in Sources */,
